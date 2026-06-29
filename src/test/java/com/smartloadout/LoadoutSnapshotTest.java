@@ -37,4 +37,42 @@ public class LoadoutSnapshotTest
         assertEquals("ranged", snapshot.getAttackStyle());
         assertFalse(snapshot.presentInventoryItems(Collections.singleton(9999)).contains(9999));
     }
+
+    @Test
+    public void nullMapsBehaveAsEmpty()
+    {
+        LoadoutSnapshot snapshot = new LoadoutSnapshot(null, null, null, null, null, 0);
+
+        assertEquals(0, snapshot.countInventoryItems(Collections.singleton(385)));
+        assertFalse(snapshot.hasInventoryOrEquipmentItem(Collections.singleton(9185)));
+        assertFalse(snapshot.hasEquippedItem(Collections.singleton(9185)));
+        assertEquals(0, snapshot.countRunePouchItems(Collections.singleton(563)));
+        assertTrue(snapshot.presentInventoryItems(Collections.singleton(385)).isEmpty());
+        assertTrue(snapshot.getInventory().isEmpty());
+        assertTrue(snapshot.getEquipment().isEmpty());
+        assertEquals("", snapshot.getSpellbook());
+        assertEquals("", snapshot.getAttackStyle());
+    }
+
+    @Test
+    public void zeroQuantityItemsAreAbsent()
+    {
+        Map<Integer, Integer> inventory = new HashMap<>();
+        inventory.put(385, 0);
+        Map<Integer, Integer> equipment = new HashMap<>();
+        equipment.put(9185, 0);
+
+        LoadoutSnapshot snapshot = new LoadoutSnapshot(
+            inventory,
+            equipment,
+            Collections.emptyMap(),
+            "standard",
+            "ranged",
+            0);
+
+        assertFalse(snapshot.hasInventoryOrEquipmentItem(new HashSet<>(Arrays.asList(385, 9185))));
+        assertFalse(snapshot.hasEquippedItem(Collections.singleton(9185)));
+        assertFalse(snapshot.presentInventoryItems(Collections.singleton(385)).contains(385));
+    }
 }
+

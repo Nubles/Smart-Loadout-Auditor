@@ -22,8 +22,8 @@ public class ActivityTemplate
     {
         this.name = name;
         this.category = category;
-        this.rules = new ArrayList<>(rules);
-        this.itemGroups = new HashMap<>(itemGroups);
+        this.rules = rules == null ? new ArrayList<LoadoutRule>() : new ArrayList<>(rules);
+        this.itemGroups = copyItemGroups(itemGroups);
     }
 
     public String getName()
@@ -49,5 +49,21 @@ public class ActivityTemplate
     public Map<String, List<Integer>> getItemGroups()
     {
         return itemGroups == null ? Collections.emptyMap() : itemGroups;
+    }
+
+    private Map<String, List<Integer>> copyItemGroups(Map<String, List<Integer>> itemGroups)
+    {
+        Map<String, List<Integer>> copy = new HashMap<>();
+        if (itemGroups == null)
+        {
+            return copy;
+        }
+
+        for (Map.Entry<String, List<Integer>> entry : itemGroups.entrySet())
+        {
+            List<Integer> itemIds = entry.getValue();
+            copy.put(entry.getKey(), itemIds == null ? new ArrayList<Integer>() : new ArrayList<>(itemIds));
+        }
+        return copy;
     }
 }

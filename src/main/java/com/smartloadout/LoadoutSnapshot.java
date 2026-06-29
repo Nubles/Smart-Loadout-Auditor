@@ -23,9 +23,9 @@ public class LoadoutSnapshot
         String attackStyle,
         int wildernessLevel)
     {
-        this.inventory = new HashMap<>(inventory);
-        this.equipment = new HashMap<>(equipment);
-        this.runePouch = new HashMap<>(runePouch);
+        this.inventory = inventory == null ? new HashMap<Integer, Integer>() : new HashMap<>(inventory);
+        this.equipment = equipment == null ? new HashMap<Integer, Integer>() : new HashMap<>(equipment);
+        this.runePouch = runePouch == null ? new HashMap<Integer, Integer>() : new HashMap<>(runePouch);
         this.spellbook = spellbook == null ? "" : spellbook;
         this.attackStyle = attackStyle == null ? "" : attackStyle;
         this.wildernessLevel = wildernessLevel;
@@ -36,7 +36,7 @@ public class LoadoutSnapshot
         int total = 0;
         for (int itemId : itemIds)
         {
-            total += inventory.getOrDefault(itemId, 0);
+            total += quantity(inventory, itemId);
         }
         return total;
     }
@@ -45,7 +45,7 @@ public class LoadoutSnapshot
     {
         for (int itemId : itemIds)
         {
-            if (inventory.containsKey(itemId) || equipment.containsKey(itemId))
+            if (quantity(inventory, itemId) > 0 || quantity(equipment, itemId) > 0)
             {
                 return true;
             }
@@ -57,7 +57,7 @@ public class LoadoutSnapshot
     {
         for (int itemId : itemIds)
         {
-            if (equipment.containsKey(itemId))
+            if (quantity(equipment, itemId) > 0)
             {
                 return true;
             }
@@ -70,7 +70,7 @@ public class LoadoutSnapshot
         int total = 0;
         for (int itemId : itemIds)
         {
-            total += runePouch.getOrDefault(itemId, 0);
+            total += quantity(runePouch, itemId);
         }
         return total;
     }
@@ -80,7 +80,7 @@ public class LoadoutSnapshot
         Set<Integer> present = new HashSet<>();
         for (int itemId : itemIds)
         {
-            if (inventory.containsKey(itemId))
+            if (quantity(inventory, itemId) > 0)
             {
                 present.add(itemId);
             }
@@ -111,5 +111,11 @@ public class LoadoutSnapshot
     public int getWildernessLevel()
     {
         return wildernessLevel;
+    }
+
+    private int quantity(Map<Integer, Integer> items, int itemId)
+    {
+        Integer quantity = items.get(itemId);
+        return quantity == null ? 0 : quantity;
     }
 }
