@@ -49,7 +49,7 @@ public final class StarterTemplates
         groups.put("runes", Arrays.asList(556, 557, 558, 560, 565));
         List<LoadoutRule> rules = new ArrayList<>();
         rules.add(rule(LoadoutRuleType.REQUIRED_SPELLBOOK, "Use standard spellbook", "", 0, "standard", 0));
-        rules.add(rule(LoadoutRuleType.REQUIRED_ITEM, "Bring raid runes", "runes", 1, "", 0));
+        rules.add(rule(LoadoutRuleType.REQUIRED_ITEM, "Bring at least one raid rune type", "runes", 1, "", 0));
         return new ActivityTemplate("Raid pre-check", "raid", rules, groups);
     }
 
@@ -63,3 +63,4 @@ public final class StarterTemplates
         return rule;
     }
 }
+

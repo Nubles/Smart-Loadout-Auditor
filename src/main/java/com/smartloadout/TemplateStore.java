@@ -2,6 +2,7 @@ package com.smartloadout;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +27,30 @@ public final class TemplateStore
         {
             return Collections.emptyList();
         }
-        ActivityTemplate[] templates = GSON.fromJson(json, ActivityTemplate[].class);
-        return templates == null ? Collections.emptyList() : new ArrayList<>(Arrays.asList(templates));
+
+        ActivityTemplate[] templates;
+        try
+        {
+            templates = GSON.fromJson(json, ActivityTemplate[].class);
+        }
+        catch (JsonParseException ex)
+        {
+            return Collections.emptyList();
+        }
+
+        if (templates == null)
+        {
+            return Collections.emptyList();
+        }
+
+        List<ActivityTemplate> imported = new ArrayList<>();
+        for (ActivityTemplate template : Arrays.asList(templates))
+        {
+            if (template != null)
+            {
+                imported.add(template);
+            }
+        }
+        return imported;
     }
 }
