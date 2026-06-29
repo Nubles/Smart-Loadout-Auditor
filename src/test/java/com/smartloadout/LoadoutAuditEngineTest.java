@@ -99,6 +99,50 @@ public class LoadoutAuditEngineTest
         assertEquals(AuditSeverity.WARNING, new LoadoutAuditEngine().audit(template, snapshot).get(0).getSeverity());
     }
 
+    @Test
+    public void nullTemplateReturnsEmptyResults()
+    {
+        LoadoutSnapshot snapshot = snapshot(Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap(), "standard", "melee", 0);
+
+        assertEquals(0, new LoadoutAuditEngine().audit(null, snapshot).size());
+    }
+
+    @Test
+    public void nullRuleEntryReturnsWarning()
+    {
+        ActivityTemplate template = new ActivityTemplate("Template", "test", Collections.singletonList(null), Collections.emptyMap());
+        LoadoutSnapshot snapshot = snapshot(Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap(), "standard", "melee", 0);
+        AuditResult result = new LoadoutAuditEngine().audit(template, snapshot).get(0);
+
+        assertEquals(AuditSeverity.WARNING, result.getSeverity());
+        assertEquals("Invalid rule", result.getTitle());
+        assertEquals("Template contains an empty rule.", result.getMessage());
+    }
+
+    @Test
+    public void nullSnapshotReturnsWarningForRule()
+    {
+        LoadoutRule rule = rule(LoadoutRuleType.REQUIRED_ITEM, "Bring teleport", "teleports", 0, "", 0);
+        ActivityTemplate template = template(rule);
+        AuditResult result = new LoadoutAuditEngine().audit(template, null).get(0);
+
+        assertEquals(AuditSeverity.WARNING, result.getSeverity());
+        assertEquals("Bring teleport", result.getTitle());
+        assertEquals("Current loadout state is unavailable.", result.getMessage());
+    }
+
+    @Test
+    public void missingExpectedTextValueReturnsWarning()
+    {
+        LoadoutRule rule = rule(LoadoutRuleType.REQUIRED_SPELLBOOK, "Use configured spellbook", "", 0, " ", 0);
+        ActivityTemplate template = template(rule);
+        LoadoutSnapshot snapshot = snapshot(Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap(), "", "melee", 0);
+        AuditResult result = new LoadoutAuditEngine().audit(template, snapshot).get(0);
+
+        assertEquals(AuditSeverity.WARNING, result.getSeverity());
+        assertEquals("Rule is missing an expected value.", result.getMessage());
+    }
+
     private static ActivityTemplate template(LoadoutRule rule)
     {
         return new ActivityTemplate("Template", "test", Collections.singletonList(rule), Collections.emptyMap());

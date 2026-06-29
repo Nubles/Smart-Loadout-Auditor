@@ -11,9 +11,25 @@ public class LoadoutAuditEngine
     public List<AuditResult> audit(ActivityTemplate template, LoadoutSnapshot snapshot)
     {
         List<AuditResult> results = new ArrayList<>();
+        if (template == null)
+        {
+            return results;
+        }
+
         for (LoadoutRule rule : template.getRules())
         {
-            results.add(evaluate(template, rule, snapshot));
+            if (rule == null)
+            {
+                results.add(new AuditResult(AuditSeverity.WARNING, "Invalid rule", "Template contains an empty rule."));
+            }
+            else if (snapshot == null)
+            {
+                results.add(new AuditResult(AuditSeverity.WARNING, rule.getTitle(), "Current loadout state is unavailable."));
+            }
+            else
+            {
+                results.add(evaluate(template, rule, snapshot));
+            }
         }
         return results;
     }
@@ -81,7 +97,13 @@ public class LoadoutAuditEngine
 
     private AuditResult equalsText(LoadoutRule rule, String actual, String pass, String fail)
     {
-        boolean matches = normalize(actual).equals(normalize(rule.getExpectedValue()));
+        String expected = normalize(rule.getExpectedValue());
+        if (expected.isEmpty())
+        {
+            return new AuditResult(AuditSeverity.WARNING, rule.getTitle(), "Rule is missing an expected value.");
+        }
+
+        boolean matches = normalize(actual).equals(expected);
         return new AuditResult(matches ? AuditSeverity.PASS : AuditSeverity.FAIL, rule.getTitle(), matches ? pass : fail + ": expected " + rule.getExpectedValue() + ".");
     }
 
