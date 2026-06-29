@@ -20,6 +20,11 @@ public class LoadoutAuditEngine
 
     private AuditResult evaluate(ActivityTemplate template, LoadoutRule rule, LoadoutSnapshot snapshot)
     {
+        if (rule.getType() == null)
+        {
+            return new AuditResult(AuditSeverity.WARNING, rule.getTitle(), "Unsupported rule type.");
+        }
+
         switch (rule.getType())
         {
             case REQUIRED_ITEM:

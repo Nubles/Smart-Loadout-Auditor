@@ -89,6 +89,16 @@ public class LoadoutAuditEngineTest
         assertEquals(AuditSeverity.WARNING, new LoadoutAuditEngine().audit(template, snapshot(inventory, Collections.emptyMap(), Collections.emptyMap(), "standard", "melee", 0)).get(0).getSeverity());
     }
 
+    @Test
+    public void missingRuleTypeReturnsWarning()
+    {
+        LoadoutRule rule = new LoadoutRule();
+        ActivityTemplate template = template(rule);
+        LoadoutSnapshot snapshot = snapshot(Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap(), "standard", "melee", 0);
+
+        assertEquals(AuditSeverity.WARNING, new LoadoutAuditEngine().audit(template, snapshot).get(0).getSeverity());
+    }
+
     private static ActivityTemplate template(LoadoutRule rule)
     {
         return new ActivityTemplate("Template", "test", Collections.singletonList(rule), Collections.emptyMap());
