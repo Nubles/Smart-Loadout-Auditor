@@ -19,7 +19,11 @@ public class SmartLoadoutAuditorPanel extends PluginPanel
 	private final JTextArea results = new JTextArea();
 	private List<ActivityTemplate> templates = Collections.emptyList();
 
-	public SmartLoadoutAuditorPanel(Consumer<Integer> onTemplateSelected, Runnable onAuditRequested, Runnable onImportRequested, Runnable onExportRequested)
+	public SmartLoadoutAuditorPanel(
+		Consumer<Integer> onTemplateSelected,
+		Runnable onAuditRequested,
+		Runnable onImportRequested,
+		Runnable onExportRequested)
 	{
 		setLayout(new BorderLayout(0, 8));
 

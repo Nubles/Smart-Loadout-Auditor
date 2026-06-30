@@ -41,6 +41,11 @@ public class ActivityTemplate
         return notes == null ? "" : notes;
     }
 
+    public void setNotes(String notes)
+    {
+        this.notes = notes;
+    }
+
     public List<LoadoutRule> getRules()
     {
         return rules == null ? Collections.emptyList() : rules;

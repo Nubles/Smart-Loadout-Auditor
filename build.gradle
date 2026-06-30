@@ -29,7 +29,6 @@ dependencies {
     devImplementation group: 'net.runelite', name: 'client', version: runeLiteVersion
     devImplementation group: 'net.runelite', name: 'jshell', version: runeLiteVersion
     testImplementation 'junit:junit:4.13.2'
-    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 group = 'com.smartloadout'

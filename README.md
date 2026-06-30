@@ -1,6 +1,6 @@
 # Smart Loadout Auditor
 
-A RuneLite external plugin that checks whether the player's current loadout satisfies flexible activity rules.
+A RuneLite external plugin that checks whether the player's current loadout satisfies flexible activity rules before an activity starts.
 
 The plugin is advisory only. It does not click, withdraw, equip, modify menu entries, send chat, or automate gameplay.
 
@@ -22,10 +22,23 @@ The plugin is advisory only. It does not click, withdraw, equip, modify menu ent
 3. Review failed and warning checks before starting the activity.
 4. Use **Export JSON** and **Import JSON** to share templates through the clipboard.
 
+## Starter templates
+
+- Wilderness clue
+- Generic boss trip
+- Raid pre-check
+
+## Development
+
+This project is intended for RuneLite Plugin Hub standard builds.
+
+```powershell
+.\gradlew.bat test
+.\gradlew.bat run
+```
+
+`gradlew run` launches RuneLite in developer mode with the plugin loaded. The Plugin Hub build remains `build=standard` and does not require third-party runtime dependencies.
+
 ## Safety
 
-Smart Loadout Auditor only reads local client state and displays reminders. It never performs gameplay actions for the player.
-
-## Current verification note
-
-Automated tests and developer-mode launch require Java and Gradle to be available on PATH. In this workspace, `java`, `gradle test`, and `gradle run` currently fail before execution because those commands are not installed or not on PATH.
+Smart Loadout Auditor only reads local client state and displays reminders. It never performs gameplay actions for the player, never modifies menu entries, and does not use external services.

@@ -22,6 +22,7 @@ public class TemplateStoreTest
         rule.setItemGroup("food");
         rule.setMinimumQuantity(8);
         ActivityTemplate template = new ActivityTemplate("Generic boss trip", "bossing", Collections.singletonList(rule), itemGroups);
+        template.setNotes("Bring a teleport out.");
 
         String json = TemplateStore.exportTemplates(Collections.singletonList(template));
         List<ActivityTemplate> imported = TemplateStore.importTemplates(json);
@@ -29,6 +30,7 @@ public class TemplateStoreTest
         assertEquals(1, imported.size());
         assertEquals("Generic boss trip", imported.get(0).getName());
         assertEquals("bossing", imported.get(0).getCategory());
+        assertEquals("Bring a teleport out.", imported.get(0).getNotes());
         assertEquals(Arrays.asList(385, 391), imported.get(0).getItemGroups().get("food"));
         assertEquals(1, imported.get(0).getRules().size());
         assertEquals(LoadoutRuleType.MINIMUM_QUANTITY, imported.get(0).getRules().get(0).getType());

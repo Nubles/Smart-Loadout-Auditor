@@ -53,7 +53,13 @@ public final class StarterTemplates
         return new ActivityTemplate("Raid pre-check", "raid", rules, groups);
     }
 
-    private static LoadoutRule rule(LoadoutRuleType type, String title, String itemGroup, int minimumQuantity, String expectedValue, int wildernessLimit)
+    private static LoadoutRule rule(
+		LoadoutRuleType type,
+		String title,
+		String itemGroup,
+		int minimumQuantity,
+		String expectedValue,
+		int wildernessLimit)
     {
         LoadoutRule rule = new LoadoutRule(type, title);
         rule.setItemGroup(itemGroup);
