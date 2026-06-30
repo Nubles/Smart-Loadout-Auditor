@@ -27,6 +27,10 @@ The plugin is advisory only. It does not click, withdraw, equip, modify menu ent
 - Wilderness clue
 - Generic boss trip
 - Raid pre-check
+- Barrows run
+- Zulrah trip
+- Vorkath trip
+- Wintertodt basic
 
 ## Safety
 

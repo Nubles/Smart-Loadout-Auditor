@@ -74,7 +74,15 @@ public class TemplateStoreTest
         assertTrue(hasTemplateNamed(templates, "Wilderness clue"));
         assertTrue(hasTemplateNamed(templates, "Generic boss trip"));
         assertTrue(hasTemplateNamed(templates, "Raid pre-check"));
+        assertTrue(hasTemplateNamed(templates, "Barrows run"));
+        assertTrue(hasTemplateNamed(templates, "Zulrah trip"));
+        assertTrue(hasTemplateNamed(templates, "Vorkath trip"));
+        assertTrue(hasTemplateNamed(templates, "Wintertodt basic"));
         assertTrue(hasRuleTitle(templates, "Raid pre-check", "Bring at least one raid rune type"));
+        assertTrue(hasRuleTitle(templates, "Barrows run", "Bring a spade"));
+        assertTrue(hasRuleTitle(templates, "Zulrah trip", "Bring venom protection"));
+        assertTrue(hasRuleTitle(templates, "Vorkath trip", "Bring antifire protection"));
+        assertTrue(hasRuleTitle(templates, "Wintertodt basic", "Bring a fire source"));
     }
 
     private boolean hasRuleTitle(List<ActivityTemplate> templates, String templateName, String ruleTitle)
