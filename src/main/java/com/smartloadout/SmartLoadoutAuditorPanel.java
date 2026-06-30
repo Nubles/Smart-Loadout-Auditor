@@ -19,7 +19,7 @@ public class SmartLoadoutAuditorPanel extends PluginPanel
 	private final JTextArea results = new JTextArea();
 	private List<ActivityTemplate> templates = Collections.emptyList();
 
-	public SmartLoadoutAuditorPanel(Consumer<Integer> onTemplateSelected, Runnable onAuditRequested)
+	public SmartLoadoutAuditorPanel(Consumer<Integer> onTemplateSelected, Runnable onAuditRequested, Runnable onImportRequested, Runnable onExportRequested)
 	{
 		setLayout(new BorderLayout(0, 8));
 
@@ -28,7 +28,11 @@ public class SmartLoadoutAuditorPanel extends PluginPanel
 		top.add(templateSelector);
 
 		JButton audit = new JButton("Run audit");
+		JButton importButton = new JButton("Import JSON");
+		JButton exportButton = new JButton("Export JSON");
 		top.add(audit);
+		top.add(importButton);
+		top.add(exportButton);
 		add(top, BorderLayout.NORTH);
 
 		results.setEditable(false);
@@ -38,6 +42,8 @@ public class SmartLoadoutAuditorPanel extends PluginPanel
 
 		templateSelector.addActionListener(event -> onTemplateSelected.accept(templateSelector.getSelectedIndex()));
 		audit.addActionListener(event -> onAuditRequested.run());
+		importButton.addActionListener(event -> onImportRequested.run());
+		exportButton.addActionListener(event -> onExportRequested.run());
 	}
 
 	public void setTemplates(List<ActivityTemplate> templates)

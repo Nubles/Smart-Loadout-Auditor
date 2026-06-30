@@ -2,9 +2,14 @@ package com.smartloadout;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -56,7 +61,7 @@ public class SmartLoadoutAuditorPlugin extends Plugin
 	{
 		templates = StarterTemplates.templates();
 		stateReader = new LoadoutStateReader(client);
-		panel = new SmartLoadoutAuditorPanel(index -> runAudit(false), () -> runAudit(false));
+		panel = new SmartLoadoutAuditorPanel(index -> runAudit(false), () -> runAudit(false), this::importFromClipboard, this::exportToClipboard);
 		panel.setTemplates(templates);
 
 		navigationButton = NavigationButton.builder()
@@ -119,6 +124,43 @@ public class SmartLoadoutAuditorPlugin extends Plugin
 		if (notify && config.notifyOnFailures() && hasFailure(results))
 		{
 			notifier.notify("Smart Loadout Auditor found unresolved loadout issues.");
+		}
+	}
+
+	private void importFromClipboard()
+	{
+		try
+		{
+			String json = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+			List<ActivityTemplate> imported = TemplateStore.importTemplates(json);
+			if (imported.isEmpty())
+			{
+				notifier.notify("Smart Loadout Auditor found no valid templates on the clipboard.");
+				return;
+			}
+
+			templates = imported;
+			panel.setTemplates(templates);
+			runAudit(false);
+			notifier.notify("Smart Loadout Auditor templates imported from clipboard.");
+		}
+		catch (UnsupportedFlavorException | IOException | IllegalStateException ex)
+		{
+			notifier.notify("Smart Loadout Auditor could not import templates from clipboard.");
+		}
+	}
+
+	private void exportToClipboard()
+	{
+		try
+		{
+			String json = TemplateStore.exportTemplates(templates);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(json), null);
+			notifier.notify("Smart Loadout Auditor templates copied to clipboard.");
+		}
+		catch (IllegalStateException ex)
+		{
+			notifier.notify("Smart Loadout Auditor could not copy templates to clipboard.");
 		}
 	}
 
