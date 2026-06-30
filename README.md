@@ -28,17 +28,6 @@ The plugin is advisory only. It does not click, withdraw, equip, modify menu ent
 - Generic boss trip
 - Raid pre-check
 
-## Development
-
-This project is intended for RuneLite Plugin Hub standard builds.
-
-```powershell
-.\gradlew.bat test
-.\gradlew.bat run
-```
-
-`gradlew run` launches RuneLite in developer mode with the plugin loaded. The Plugin Hub build remains `build=standard` and does not require third-party runtime dependencies.
-
 ## Safety
 
 Smart Loadout Auditor only reads local client state and displays reminders. It never performs gameplay actions for the player, never modifies menu entries, and does not use external services.
